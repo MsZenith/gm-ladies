@@ -10,7 +10,9 @@ import {
   Tooltip,
   useColorMode,
   useToast,
+  ChakraProvider, Select, Box, Text, VStack,
 } from "@chakra-ui/react";
+
 import {
   useInitWeb3InboxClient,
   useManageSubscription,
@@ -32,7 +34,36 @@ import Subscribers from "../components/Subscribers";
 const projectId = process.env.NEXT_PUBLIC_PROJECT_ID as string;
 const appDomain = process.env.NEXT_PUBLIC_APP_DOMAIN as string;
 
+const HoroscopeData = {
+  Aries: "Today, you will feel a burst of energy and enthusiasm. It's a great day to start new projects and pursue your passions.",
+  Taurus: "You may find yourself in a reflective mood today. Take some time to think about your long-term goals and how to achieve them.",
+  Gemini: "Communication will be key for you today. Express your thoughts and feelings clearly, and you'll find that people are receptive.",
+  Cancer: "Emotions may run high today. Don't be afraid to lean on loved ones for support and guidance.",
+  Leo: "You're feeling confident and charismatic today. Use your charm to your advantage in both personal and professional situations.",
+  Virgo: "Focus on your health and well-being today. A little self-care can go a long way in improving your overall quality of life.",
+  Libra: "Your social life is thriving today. Enjoy some quality time with friends and maybe even meet some new people.",
+  Scorpio: "You're feeling particularly determined and resourceful today. Use these qualities to overcome any challenges that come your way.",
+  Sagittarius: "Adventure awaits you today. Whether it's a spontaneous trip or a new hobby, embrace the excitement.",
+  Capricorn: "Your work ethic is impressive today. Focus on your career goals and you'll make significant progress.",
+  Aquarius: "Your creative side is shining today. Use your imagination to solve problems and come up with innovative ideas.",
+  Pisces: "You may feel a bit dreamy today, but that's okay. Allow yourself to daydream and tap into your intuition."
+};
+
 const Home: NextPage = () => {
+
+  /** Horescopes **/
+  const [selectedHoroscope, setSelectedHoroscope] = useState('');
+  const [horoscopePrediction, setHoroscopePrediction] = useState('');
+
+  const handleHoroscopeChange = (event) => {
+    setSelectedHoroscope(event.target.value);
+  };
+
+  const getHoroscope = () => {
+    setHoroscopePrediction(horoscopeData[selectedHoroscope]);
+  };
+
+
   /** Web3Inbox SDK hooks **/
   const isW3iInitialized = useInitWeb3InboxClient({
     projectId,
@@ -105,7 +136,7 @@ const Home: NextPage = () => {
   const handleTestNotification = useCallback(async () => {
     if (isSubscribed) {
       handleSendNotification({
-        title: "GM Hacker",
+        title: "GM Ladies",
         body: "Hack it until you make it!",
         icon: `${window.location.origin}/WalletConnect-blue.svg`,
         url: window.location.origin,
@@ -171,6 +202,26 @@ const Home: NextPage = () => {
       <Heading alignSelf={"center"} textAlign={"center"} mb={6}>
         Web3Inbox hooks
       </Heading>
+      <ChakraProvider>
+      <VStack spacing={4}>
+        <Text fontSize="2xl">Horoscope Selector</Text>
+        <Select
+          placeholder="Select your horoscope"
+          value={selectedHoroscope}
+          onChange={handleHoroscopeChange}
+        >
+          {Object.keys(horoscopeData).map((sign) => (
+            <option key={sign} value={sign}>
+              {sign}
+            </option>
+          ))}
+        </Select>
+        <Button onClick={getHoroscope}>Get Horoscope</Button>
+        <Box>
+          <Text fontSize="lg">{horoscopePrediction}</Text>
+        </Box>
+      </VStack>
+    </ChakraProvider>
 
       <Flex flexDirection="column" gap={4}>
         {isSubscribed ? (

@@ -35,18 +35,18 @@ const projectId = process.env.NEXT_PUBLIC_PROJECT_ID as string;
 const appDomain = process.env.NEXT_PUBLIC_APP_DOMAIN as string;
 
 const HoroscopeData= {
-  Aries: "Today, you will feel a burst of energy and enthusiasm. It's a great day to start new projects and pursue your passions.",
-  Taurus: "You may find yourself in a reflective mood today. Take some time to think about your long-term goals and how to achieve them.",
-  Gemini: "Communication will be key for you today. Express your thoughts and feelings clearly, and you'll find that people are receptive.",
-  Cancer: "Emotions may run high today. Don't be afraid to lean on loved ones for support and guidance.",
-  Leo: "You're feeling confident and charismatic today. Use your charm to your advantage in both personal and professional situations.",
-  Virgo: "Focus on your health and well-being today. A little self-care can go a long way in improving your overall quality of life.",
-  Libra: "Your social life is thriving today. Enjoy some quality time with friends and maybe even meet some new people.",
-  Scorpio: "You're feeling particularly determined and resourceful today. Use these qualities to overcome any challenges that come your way.",
-  Sagittarius: "Adventure awaits you today. Whether it's a spontaneous trip or a new hobby, embrace the excitement.",
-  Capricorn: "Your work ethic is impressive today. Focus on your career goals and you'll make significant progress.",
-  Aquarius: "Your creative side is shining today. Use your imagination to solve problems and come up with innovative ideas.",
-  Pisces: "You may feel a bit dreamy today, but that's okay. Allow yourself to daydream and tap into your intuition."
+  Aries: "you will feel a burst of energy and enthusiasm. It's a great day to start new projects and pursue your passions.",
+  Taurus: "you may find yourself in a reflective mood today. Take some time to think about your long-term goals and how to achieve them.",
+  Gemini: "communication will be key for you today. Express your thoughts and feelings clearly, and you'll find that people are receptive.",
+  Cancer: "emotions may run high today. Don't be afraid to lean on loved ones for support and guidance.",
+  Leo: "you're feeling confident and charismatic today. Use your charm to your advantage in both personal and professional situations.",
+  Virgo: "focus on your health and well-being today. A little self-care can go a long way in improving your overall quality of life.",
+  Libra: "your social life is thriving today. Enjoy some quality time with friends and maybe even meet some new people.",
+  Scorpio: "you're feeling particularly determined and resourceful today. Use these qualities to overcome any challenges that come your way.",
+  Sagittarius: "adventure awaits you today. Whether it's a spontaneous trip or a new hobby, embrace the excitement.",
+  Capricorn: "your work ethic is impressive today. Focus on your career goals and you'll make significant progress.",
+  Aquarius: "your creative side is shining today. Use your imagination to solve problems and come up with innovative ideas.",
+  Pisces: "you may feel a bit dreamy today, but that's okay. Allow yourself to daydream and tap into your intuition."
 } as any
 
 const Home: NextPage = () => {
@@ -150,11 +150,12 @@ const Home: NextPage = () => {
     <Flex w="full" flexDirection={"column"} maxW="700px">
       <Image
         aria-label="WalletConnect"
-        src={
-          colorMode === "dark"
-            ? "/WalletConnect-white.svg"
-            : "/WalletConnect-black.svg"
-        }
+        src={"/WalletWhispers.svg"}
+        // src={
+        //   colorMode === "dark"
+        //     ? "/WalletConnect-white.svg"
+        //     : "/WalletConnect-black.svg"
+        // }
       />
       <Heading alignSelf={"center"} textAlign={"center"} mb={6}>
         Welcome friend

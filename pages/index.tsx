@@ -34,7 +34,7 @@ import Subscribers from "../components/Subscribers";
 const projectId = process.env.NEXT_PUBLIC_PROJECT_ID as string;
 const appDomain = process.env.NEXT_PUBLIC_APP_DOMAIN as string;
 
-const HoroscopeData = {
+const HoroscopeData= {
   Aries: "Today, you will feel a burst of energy and enthusiasm. It's a great day to start new projects and pursue your passions.",
   Taurus: "You may find yourself in a reflective mood today. Take some time to think about your long-term goals and how to achieve them.",
   Gemini: "Communication will be key for you today. Express your thoughts and feelings clearly, and you'll find that people are receptive.",
@@ -47,7 +47,7 @@ const HoroscopeData = {
   Capricorn: "Your work ethic is impressive today. Focus on your career goals and you'll make significant progress.",
   Aquarius: "Your creative side is shining today. Use your imagination to solve problems and come up with innovative ideas.",
   Pisces: "You may feel a bit dreamy today, but that's okay. Allow yourself to daydream and tap into your intuition."
-};
+} as any
 
 const Home: NextPage = () => {
 
@@ -55,14 +55,13 @@ const Home: NextPage = () => {
   const [selectedHoroscope, setSelectedHoroscope] = useState('');
   const [horoscopePrediction, setHoroscopePrediction] = useState('');
 
-  const handleHoroscopeChange = (event) => {
+  const handleHoroscopeChange = (event: any) => {
     setSelectedHoroscope(event.target.value);
   };
 
   const getHoroscope = () => {
-    setHoroscopePrediction(horoscopeData[selectedHoroscope]);
+    setHoroscopePrediction(HoroscopeData[selectedHoroscope]);
   };
-
 
   /** Web3Inbox SDK hooks **/
   const isW3iInitialized = useInitWeb3InboxClient({
@@ -134,60 +133,18 @@ const Home: NextPage = () => {
   // handleSendNotification will send a notification to the current user and includes error handling.
   // If you don't want to use this hook and want more flexibility, you can use sendNotification.
   const handleTestNotification = useCallback(async () => {
+    getHoroscope()
     if (isSubscribed) {
       handleSendNotification({
-        title: "GM Ladies",
-        body: "Hack it until you make it!",
+        // title: "GM Ladiesssss",
+        title: `Hello ${selectedHoroscope}, today ${HoroscopeData[selectedHoroscope]}`,
+        body: `${horoscopePrediction}`,
         icon: `${window.location.origin}/WalletConnect-blue.svg`,
         url: window.location.origin,
         type: "promotional",
       });
     }
-  }, [handleSendNotification, isSubscribed]);
-
-  // Example of how to send a notification based on some "automation".
-  // sendNotification will make a fetch request to /api/notify
-  const handleBlockNotification = useCallback(async () => {
-    if (isSubscribed && account && isBlockNotificationEnabled) {
-      const blockNumber = await wagmiPublicClient.getBlockNumber();
-      if (lastBlock !== blockNumber.toString()) {
-        setLastBlock(blockNumber.toString());
-        try {
-          toast({
-            title: "New block",
-            position: "top",
-            variant: "subtle",
-          });
-          await sendNotification({
-            accounts: [account], // accounts that we want to send the notification to.
-            notification: {
-              title: "New block",
-              body: blockNumber.toString(),
-              icon: `${window.location.origin}/eth-glyph-colored.png`,
-              url: `https://etherscan.io/block/${blockNumber.toString()}`,
-              type: "transactional",
-            },
-          });
-        } catch (error: any) {
-          toast({
-            title: "Failed to send new block notification",
-            description: error.message ?? "Something went wrong",
-          });
-        }
-      }
-    }
-  }, [
-    wagmiPublicClient,
-    isSubscribed,
-    lastBlock,
-    account,
-    toast,
-    isBlockNotificationEnabled,
-  ]);
-
-  useInterval(() => {
-    handleBlockNotification();
-  }, 12000);
+  }, [handleSendNotification, selectedHoroscope, horoscopePrediction,isSubscribed]);
 
   return (
     <Flex w="full" flexDirection={"column"} maxW="700px">
@@ -200,29 +157,31 @@ const Home: NextPage = () => {
         }
       />
       <Heading alignSelf={"center"} textAlign={"center"} mb={6}>
-        Web3Inbox hooks
+        Welcome friend
       </Heading>
       <ChakraProvider>
       <VStack spacing={4}>
-        <Text fontSize="2xl">Horoscope Selector</Text>
+        <Text fontSize="2xl">What is your Horoscope?</Text>
         <Select
           placeholder="Select your horoscope"
           value={selectedHoroscope}
           onChange={handleHoroscopeChange}
         >
-          {Object.keys(horoscopeData).map((sign) => (
+          {Object.keys(HoroscopeData).map((sign) => (
             <option key={sign} value={sign}>
               {sign}
             </option>
           ))}
         </Select>
-        <Button onClick={getHoroscope}>Get Horoscope</Button>
+        {selectedHoroscope ? 
+        <Text> Welcome {selectedHoroscope}</Text> : ""
+        }
+        <Button onClick={getHoroscope}>What will today be like for me?</Button>
         <Box>
           <Text fontSize="lg">{horoscopePrediction}</Text>
         </Box>
       </VStack>
     </ChakraProvider>
-
       <Flex flexDirection="column" gap={4}>
         {isSubscribed ? (
           <Flex flexDirection={"column"} alignItems="center" gap={4}>
@@ -237,19 +196,6 @@ const Home: NextPage = () => {
               loadingText="Sending..."
             >
               Send test notification
-            </Button>
-            <Button
-              leftIcon={isBlockNotificationEnabled ? <FaPause /> : <FaPlay />}
-              variant="outline"
-              onClick={() =>
-                setIsBlockNotificationEnabled((isEnabled) => !isEnabled)
-              }
-              isDisabled={!isW3iInitialized}
-              colorScheme={isBlockNotificationEnabled ? "orange" : "blue"}
-              rounded="full"
-            >
-              {isBlockNotificationEnabled ? "Pause" : "Resume"} block
-              notifications
             </Button>
             <Button
               leftIcon={<FaBellSlash />}
@@ -285,7 +231,7 @@ const Home: NextPage = () => {
               loadingText="Subscribing..."
               isDisabled={!Boolean(address) || !Boolean(account)}
             >
-              Tell me please!
+              Subscribe!
             </Button>
           </Tooltip>
         )}

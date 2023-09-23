@@ -8,6 +8,7 @@ import {
   AlertIcon,
   AlertTitle,
   Box,
+  Button,
   CloseButton,
   Flex,
   Heading,
@@ -21,6 +22,12 @@ import React from "react";
 function Messages() {
   const { account } = useW3iAccount();
   const { messages, deleteMessage } = useMessages(account);
+
+  const clearMessages = () => {
+    for (const message of messages) {
+      deleteMessage(message.id);
+    }
+  }
 
   return (
     <AccordionItem>
@@ -37,7 +44,9 @@ function Messages() {
           pb={4}
           gap={2}
           position={"relative"}
-        >
+        >         
+        <Button onClick={clearMessages}>Clear Messages</Button>
+
           {!messages?.length ? (
             <Text>No messages yet.</Text>
           ) : (

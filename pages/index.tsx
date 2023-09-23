@@ -234,7 +234,7 @@ const Home: NextPage = () => {
               loadingText="Subscribing..."
               isDisabled={!Boolean(address) || !Boolean(account)}
             >
-              Subscribe
+              Tell me please!
             </Button>
           </Tooltip>
         )}

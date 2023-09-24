@@ -196,7 +196,7 @@ const Home: NextPage = () => {
               isLoading={isSending}
               loadingText="Sending..."
             >
-              Send test notification
+              Tell me now!
             </Button>
             <Button
               leftIcon={<FaBellSlash />}
